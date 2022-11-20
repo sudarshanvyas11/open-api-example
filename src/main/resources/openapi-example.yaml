@@ -38,6 +38,17 @@ components:
         - id
         - firstName
         - lastName
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        books:
+          type: array
+          $ref: '#/components/schemas/Book'
     Publisher:
       type: object
       required:
@@ -101,8 +112,106 @@ components:
           type: string
           enum: [MYSTERY, THRILLER, HORROR, FICTION, COMEDY, BIOGRAPHY, ROMANCE, ACTION, FANTASY]
 paths:
-  /test:
+  /books:
     get:
+      summary: List All Books
+      description: List all books registered in a library, will include books that are currently unavailable
+      operationId: listBooks
       responses:
         '200':
-          description: OK
+          description: List of all books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+  /books/author:
+    get:
+      summary: List All Books By Author
+      description: List all books registered in a library by Author Name, will include books that are currently unavailable
+      operationId: listBooksByAuthor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: List of all books by author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found for author
+  /book/{genre}:
+    get:
+      summary: List All books by genre
+      description: Get a book, will include book that is currently unavailable
+      operationId: getBookById
+      parameters:
+        - in: path
+          name: genre
+          schema:
+            type: string
+            enum: [MYSTERY, THRILLER, HORROR, FICTION, COMEDY, BIOGRAPHY, ROMANCE, ACTION, FANTASY]
+          required: true
+          description: Name of book to be fetched
+      responses:
+        '200':
+          description: Book by name
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found by name
+  /book/{id}:
+    get:
+      summary: Get book
+      description: Get a book, will include book that is currently unavailable
+      operationId: getBookById
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Name of book to be fetched
+      responses:
+        '200':
+          description: Book by Id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found by name
+  /book/{name}:
+    get:
+      summary: Find book by name
+      description: Find a book by provided name, will include book that is currently unavailable
+      operationId: findBookByName
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: Name of book to be searched
+      responses:
+        '200':
+          description: Book by name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found by name
