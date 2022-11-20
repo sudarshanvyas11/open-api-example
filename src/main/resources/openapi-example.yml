@@ -152,7 +152,7 @@ paths:
     get:
       summary: List All books by genre
       description: Get a book, will include book that is currently unavailable
-      operationId: getBookById
+      operationId: listBooksByGenre
       parameters:
         - in: path
           name: genre
@@ -198,7 +198,7 @@ paths:
     get:
       summary: Find book by name
       description: Find a book by provided name, will include book that is currently unavailable
-      operationId: findBookByName
+      operationId: getBookByName
       parameters:
         - in: path
           name: name
