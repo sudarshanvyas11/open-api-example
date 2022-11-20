@@ -1,9 +1,105 @@
 openapi: "3.0.3"
 info:
-  title: API Title
+  title: Library
   version: "1.0"
+  description: API Details for library bookkeeping
+  contact:
+    name: Sudarshan Vyas
+    url: https://github.com/sudarshanvyas11/
 servers:
-  - url: https://api.server.test/v1
+  - url: http://localhost:8080/v1/library/
+    description: API Host for library
+components:
+  schemas:
+    Address:
+      type: object
+      required:
+        - id
+        - firstLine
+        - postCode
+        - city
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstLine:
+          type: string
+        secondLine:
+          type: string
+        postCode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+    Author:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+    Publisher:
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - email
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          $ref: '#/components/schemas/Address'
+        website:
+          type: string
+    Library:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - address
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          $ref: '#/components/schemas/Address'
+        books:
+          type: array
+          $ref: '#/components/schemas/Book'
+    Book:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - publisher
+        - genre
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        author:
+          $ref: '#/components/schemas/Author'
+        publisher:
+          $ref: '#/components/schemas/Publisher'
+        genre:
+          type: string
+          enum: [MYSTERY, THRILLER, HORROR, FICTION, COMEDY, BIOGRAPHY, ROMANCE, ACTION, FANTASY]
 paths:
   /test:
     get:
