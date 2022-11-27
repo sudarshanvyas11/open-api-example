@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.4</version>
+        <version>3.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example.openapi</groupId>
@@ -21,7 +21,7 @@
         <assertj-core.version>3.23.1</assertj-core.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <jackson-databind-nullable.version>0.2.4</jackson-databind-nullable.version>
-        <junit-bom.version>5.8.1</junit-bom.version>
+        <junit-bom.version>5.9.1</junit-bom.version>
         <logcaptor.version>2.7.10</logcaptor.version>
         <springdoc-openapi-ui.version>1.6.12</springdoc-openapi-ui.version>
         <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
@@ -32,6 +32,7 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <openapi-generator-maven-plugin.version>6.2.1</openapi-generator-maven-plugin.version>
         <springdoc-openapi-maven-plugin.version>1.4</springdoc-openapi-maven-plugin.version>
+        <spring-boot-maven-plugin.version>3.0.0</spring-boot-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -120,6 +121,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-maven-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -140,7 +142,7 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-failsafe-plugin.version}</version>
             </plugin>
-            <plugin>
+<!--            <plugin>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>
                 <version>${springdoc-openapi-maven-plugin.version}</version>
@@ -157,7 +159,7 @@
                     <outputFileName>openapi.json</outputFileName>
                     <outputDir>${project.build.directory}</outputDir>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -174,6 +176,11 @@
                             <generatorName>spring</generatorName>
                             <apiPackage>com.example.openapi.api</apiPackage>
                             <modelPackage>com.example.openapi.model</modelPackage>
+                            <dateLibrary>java8</dateLibrary>
+                            <library>spring-boot</library>
+                            <configOptions>
+                                <delegatePattern>false</delegatePattern>
+                            </configOptions>
                         </configuration>
                     </execution>
                 </executions>
