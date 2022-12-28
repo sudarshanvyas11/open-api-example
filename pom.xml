@@ -163,8 +163,8 @@
                                 <interfaceOnly>true</interfaceOnly>
                                 <library>spring-cloud</library>
                                 <useSpringBoot3>true</useSpringBoot3>
+                                <useTags>true</useTags>
                             </configOptions>
-                            <!--<library>spring-boot</library>-->
                         </configuration>
                     </execution>
                 </executions>

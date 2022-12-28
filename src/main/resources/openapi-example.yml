@@ -117,6 +117,8 @@ paths:
       summary: List All Books
       description: List all books registered in a library, will include books that are currently unavailable
       operationId: listBooks
+      tags:
+        - books
       responses:
         '200':
           description: List of all books
@@ -131,6 +133,8 @@ paths:
       summary: List All Books By Author
       description: List all books registered in a library by Author Name, will include books that are currently unavailable
       operationId: listBooksByAuthor
+      tags:
+        - books
       requestBody:
         required: true
         content:
@@ -153,6 +157,8 @@ paths:
       summary: List All books by genre
       description: Get a book, will include book that is currently unavailable
       operationId: listBooksByGenre
+      tags:
+        - books
       parameters:
         - in: path
           name: genre
@@ -177,6 +183,8 @@ paths:
       summary: Get book
       description: Get a book, will include book that is currently unavailable
       operationId: getBookById
+      tags:
+        - book
       parameters:
         - in: path
           name: id
@@ -199,6 +207,8 @@ paths:
       summary: Find book by name
       description: Find a book by provided name, will include book that is currently unavailable
       operationId: getBookByName
+      tags:
+        - book
       parameters:
         - in: path
           name: name
