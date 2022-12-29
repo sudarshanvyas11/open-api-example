@@ -1,0 +1,227 @@
+openapi: "3.0.3"
+info:
+  title: Library
+  version: "1.0"
+  description: API Details for library bookkeeping
+  contact:
+    name: Sudarshan Vyas
+    url: https://github.com/sudarshanvyas11/
+servers:
+  - url: http://localhost:8080/v1/library/
+    description: API Host for library
+components:
+  schemas:
+    Address:
+      type: object
+      required:
+        - id
+        - firstLine
+        - postCode
+        - city
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstLine:
+          type: string
+        secondLine:
+          type: string
+        postCode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+    Author:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        books:
+          type: array
+          $ref: '#/components/schemas/Book'
+    Publisher:
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - email
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          $ref: '#/components/schemas/Address'
+        website:
+          type: string
+    Library:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - address
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          $ref: '#/components/schemas/Address'
+        books:
+          type: array
+          $ref: '#/components/schemas/Book'
+    Book:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - publisher
+        - genre
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        author:
+          $ref: '#/components/schemas/Author'
+        publisher:
+          $ref: '#/components/schemas/Publisher'
+        genre:
+          type: string
+          enum: [MYSTERY, THRILLER, HORROR, FICTION, COMEDY, BIOGRAPHY, ROMANCE, ACTION, FANTASY]
+paths:
+  /books:
+    get:
+      summary: List All Books
+      description: List all books registered in a library, will include books that are currently unavailable
+      operationId: listBooks
+      tags:
+        - books
+      responses:
+        '200':
+          description: List of all books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+  /books/author:
+    get:
+      summary: List All Books By Author
+      description: List all books registered in a library by Author Name, will include books that are currently unavailable
+      operationId: listBooksByAuthor
+      tags:
+        - books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: List of all books by author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found for author
+  /book/{genre}:
+    get:
+      summary: List All books by genre
+      description: Get a book, will include book that is currently unavailable
+      operationId: listBooksByGenre
+      tags:
+        - books
+      parameters:
+        - in: path
+          name: genre
+          schema:
+            type: string
+            enum: [MYSTERY, THRILLER, HORROR, FICTION, COMEDY, BIOGRAPHY, ROMANCE, ACTION, FANTASY]
+          required: true
+          description: Name of book to be fetched
+      responses:
+        '200':
+          description: Book by name
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found by name
+  /book/{id}:
+    get:
+      summary: Get book
+      description: Get a book, will include book that is currently unavailable
+      operationId: getBookById
+      tags:
+        - book
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Name of book to be fetched
+      responses:
+        '200':
+          description: Book by Id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found by name
+  /book/{name}:
+    get:
+      summary: Find book by name
+      description: Find a book by provided name, will include book that is currently unavailable
+      operationId: getBookByName
+      tags:
+        - book
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: Name of book to be searched
+      responses:
+        '200':
+          description: Book by name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: No book found by name
