@@ -1,3 +1,15 @@
 springdoc:
-  api-docs:
-    path: /api-docs
+#  api-docs:
+#    path: /api-docs
+#  swagger-ui:
+#    path: /swagger-ui.html
+  show-actuator: true
+  use-management-port: true
+management:
+  server:
+    port: 8085
+  # This property enables the openapi and swagger-ui endpoints to be exposed beneath the actuator base path.
+  endpoints:
+    web:
+      exposure:
+        include: openapi, swagger-ui
