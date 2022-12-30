@@ -152,7 +152,7 @@ paths:
                   $ref: '#/components/schemas/Book'
         '404':
           description: No book found for author
-  /book/{genre}:
+  /books/{genre}:
     get:
       summary: List All books by genre
       description: Get a book, will include book that is currently unavailable
