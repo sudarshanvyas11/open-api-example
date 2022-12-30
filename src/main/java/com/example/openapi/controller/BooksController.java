@@ -5,12 +5,13 @@ import com.example.openapi.model.Author;
 import com.example.openapi.model.Book;
 import com.example.openapi.repository.BookRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
-
+@RestController
 public class BooksController implements BooksApi {
     private final BookRepository bookRepository;
 

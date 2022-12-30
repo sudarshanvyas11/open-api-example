@@ -3,11 +3,8 @@ package com.example.openapi.controller;
 import com.example.openapi.api.BookApi;
 import com.example.openapi.model.Book;
 import com.example.openapi.repository.BookRepository;
-import org.apache.commons.lang3.Validate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
