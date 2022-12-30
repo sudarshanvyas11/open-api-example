@@ -2,6 +2,7 @@ package com.example.openapi.controller;
 
 import com.example.openapi.model.Author;
 import com.example.openapi.model.Book;
+import com.example.openapi.repository.BookEntity;
 import com.example.openapi.repository.BookRepository;
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,10 +52,13 @@ class BooksControllerTest {
         }
 
         @Test
-        void shouldReturnListOfBooksWhenAvailable(@Mock final Book book1,
+        void shouldReturnListOfBooksWhenAvailable(@Mock final BookEntity bookEntity1,
+                                                  @Mock final BookEntity bookEntity2,
+                                                  @Mock final Book book1,
                                                   @Mock final Book book2) {
+            final ImmutableList<BookEntity> bookEntities = ImmutableList.of(bookEntity1, bookEntity2);
             final ImmutableList<Book> books = ImmutableList.of(book1, book2);
-            given(bookRepository.findAll()).willReturn(books);
+            given(bookRepository.findAll()).willReturn(bookEntities);
             assertThat(booksController.listBooks()).isEqualTo(ResponseEntity.ok(books));
         }
     }
@@ -79,10 +83,13 @@ class BooksControllerTest {
         }
 
         @Test
-        void shouldReturnListOfBooksWhenAvailableForAnAuthor(@Mock final Book book1,
+        void shouldReturnListOfBooksWhenAvailableForAnAuthor(@Mock final BookEntity bookEntity1,
+                                                             @Mock final BookEntity bookEntity2,
+                                                             @Mock final Book book1,
                                                              @Mock final Book book2) {
+            final ImmutableList<BookEntity> bookEntities = ImmutableList.of(bookEntity1, bookEntity2);
             final ImmutableList<Book> books = ImmutableList.of(book1, book2);
-            given(bookRepository.findByAuthor(author)).willReturn(books);
+            given(bookRepository.findByAuthor(author)).willReturn(bookEntities);
             assertThat(booksController.listBooksByAuthor(author)).isEqualTo(ResponseEntity.ok(books));
         }
     }
@@ -114,10 +121,13 @@ class BooksControllerTest {
         @ParameterizedTest
         @ValueSource(strings = {"MYSTERY", "THRILLER", "HORROR", "FICTION", "COMEDY", "BIOGRAPHY", "ROMANCE", "ACTION", "FANTASY"})
         void shouldReturnListOfBooksWhenAvailableForAGenre(final String genre,
+                                                           @Mock final BookEntity bookEntity1,
+                                                           @Mock final BookEntity bookEntity2,
                                                            @Mock final Book book1,
                                                            @Mock final Book book2) {
+            final ImmutableList<BookEntity> bookEntities = ImmutableList.of(bookEntity1, bookEntity2);
             final ImmutableList<Book> books = ImmutableList.of(book1, book2);
-            given(bookRepository.findByGenre(genre)).willReturn(books);
+            given(bookRepository.findByGenre(genre)).willReturn(bookEntities);
             assertThat(booksController.listBooksByGenre(genre)).isEqualTo(ResponseEntity.ok(books));
         }
     }
