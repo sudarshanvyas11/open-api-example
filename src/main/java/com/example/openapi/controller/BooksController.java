@@ -4,7 +4,6 @@ import com.example.openapi.api.BooksApi;
 import com.example.openapi.model.Author;
 import com.example.openapi.model.Book;
 import com.example.openapi.repository.BookRepository;
-import org.apache.commons.lang3.Validate;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
