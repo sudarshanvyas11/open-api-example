@@ -29,7 +29,6 @@ public class BookEntityToLdm implements Transformable<BookEntity, Book> {
         book.setAuthor(authorEntityToLdm.transform(bookEntity.getAuthor()));
         book.setPublisher(publisherEntityToLdm.transform(bookEntity.getPublisher()));
         book.setGenre(Book.GenreEnum.fromValue(bookEntity.getGenre()));
-
         return book;
     }
 }
