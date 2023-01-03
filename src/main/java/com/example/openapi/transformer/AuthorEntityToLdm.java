@@ -4,10 +4,17 @@ import com.example.openapi.component.Transformer;
 import com.example.openapi.model.Author;
 import com.example.openapi.repository.AuthorEntity;
 
-//TODO :: Implement this
+import static org.apache.commons.lang3.Validate.notNull;
+
 @Transformer
-public class AuthorEntityToLdm implements Transformable<AuthorEntity, Author>{
+public class AuthorEntityToLdm implements Transformable<AuthorEntity, Author> {
     public Author transform(AuthorEntity authorEntity) {
-        return null;
+        notNull(authorEntity, "authorEntity must not be null");
+        final Author author = new Author();
+        author.setId(authorEntity.getId());
+        author.setFirstName(authorEntity.getFirstName());
+        author.setLastName(authorEntity.getLastName());
+        //TODO :: Implement mapping for books once issue with arrays is sorted
+        return author;
     }
 }
