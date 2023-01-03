@@ -1,8 +1,7 @@
 package com.example.openapi.controller;
 
 import com.example.openapi.model.Book;
-import com.example.openapi.repository.BookEntity;
-import com.example.openapi.repository.BookRepository;
+import com.example.openapi.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -24,12 +23,12 @@ class BookControllerTest {
     private static final String NAME = "Book name";
     private static final long ID = 1L;
     @Mock
-    private BookRepository bookRepository;
+    private BookService bookService;
     private BookController bookController;
 
     @BeforeEach
     void setUp() {
-        bookController = new BookController(bookRepository);
+        bookController = new BookController(bookService);
     }
 
     @Nested
@@ -38,7 +37,7 @@ class BookControllerTest {
         void bookRepositoryMustNotBeNull() {
             assertThatNullPointerException()
                     .isThrownBy(() -> new BookController(null))
-                    .withMessage("bookRepository must not be null");
+                    .withMessage("bookService must not be null");
         }
     }
 
@@ -54,14 +53,13 @@ class BookControllerTest {
 
         @Test
         void shouldReturnNotFoundStatusWhenNoBookAvailableById() {
-            given(bookRepository.findById(ID)).willReturn(Optional.empty());
+            given(bookService.findById(ID)).willReturn(Optional.empty());
             assertThat(bookController.getBookById(ID)).isEqualTo(ResponseEntity.notFound().build());
         }
 
         @Test
-        void shouldReturnABookForAProvidedId(@Mock final BookEntity bookEntity,
-                                             @Mock final Book book) {
-            given(bookRepository.findById(ID)).willReturn(Optional.of(bookEntity));
+        void shouldReturnABookForAProvidedId(@Mock final Book book) {
+            given(bookService.findById(ID)).willReturn(Optional.of(book));
             assertThat(bookController.getBookById(ID)).isEqualTo(ResponseEntity.ok(book));
         }
     }
@@ -85,14 +83,13 @@ class BookControllerTest {
 
         @Test
         void shouldReturnNotFoundStatusWhenNoBookAvailableByName() {
-            given(bookRepository.findByName(NAME)).willReturn(Optional.empty());
+            given(bookService.findByName(NAME)).willReturn(Optional.empty());
             assertThat(bookController.getBookByName(NAME)).isEqualTo(ResponseEntity.notFound().build());
         }
 
         @Test
-        void shouldReturnABookForAProvidedName(@Mock final BookEntity bookEntity,
-                                               @Mock final Book book) {
-            given(bookRepository.findByName(NAME)).willReturn(Optional.of(bookEntity));
+        void shouldReturnABookForAProvidedName(@Mock final Book book) {
+            given(bookService.findByName(NAME)).willReturn(Optional.of(book));
             assertThat(bookController.getBookByName(NAME)).isEqualTo(ResponseEntity.ok(book));
         }
     }

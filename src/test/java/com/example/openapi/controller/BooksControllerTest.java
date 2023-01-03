@@ -2,8 +2,7 @@ package com.example.openapi.controller;
 
 import com.example.openapi.model.Author;
 import com.example.openapi.model.Book;
-import com.example.openapi.repository.BookEntity;
-import com.example.openapi.repository.BookRepository;
+import com.example.openapi.service.BooksService;
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -25,12 +24,12 @@ class BooksControllerTest {
 
     private static final String A_GENRE = "MYSTERY";
     @Mock
-    private BookRepository bookRepository;
+    private BooksService booksService;
     private BooksController booksController;
 
     @BeforeEach
     void setUp() {
-        booksController = new BooksController(bookRepository);
+        booksController = new BooksController(booksService);
     }
 
     @Nested
@@ -39,7 +38,7 @@ class BooksControllerTest {
         void bookRepositoryMustNotBeNull() {
             assertThatNullPointerException()
                     .isThrownBy(() -> new BooksController(null))
-                    .withMessage("bookRepository must not be null");
+                    .withMessage("booksService must not be null");
         }
     }
 
@@ -47,18 +46,15 @@ class BooksControllerTest {
     class ListBooks {
         @Test
         void shouldReturnNotFoundResponseWhenNoBooksAvailable() {
-            given(bookRepository.findAll()).willReturn(ImmutableList.of());
+            given(booksService.findAll()).willReturn(ImmutableList.of());
             assertThat(booksController.listBooks()).isEqualTo(ResponseEntity.notFound().build());
         }
 
         @Test
-        void shouldReturnListOfBooksWhenAvailable(@Mock final BookEntity bookEntity1,
-                                                  @Mock final BookEntity bookEntity2,
-                                                  @Mock final Book book1,
+        void shouldReturnListOfBooksWhenAvailable(@Mock final Book book1,
                                                   @Mock final Book book2) {
-            final ImmutableList<BookEntity> bookEntities = ImmutableList.of(bookEntity1, bookEntity2);
             final ImmutableList<Book> books = ImmutableList.of(book1, book2);
-            given(bookRepository.findAll()).willReturn(bookEntities);
+            given(booksService.findAll()).willReturn(books);
             assertThat(booksController.listBooks()).isEqualTo(ResponseEntity.ok(books));
         }
     }
@@ -78,18 +74,15 @@ class BooksControllerTest {
 
         @Test
         void shouldReturnNotFoundResponseWhenNoBooksAvailableForAnAuthor() {
-            given(bookRepository.findByAuthor(author)).willReturn(ImmutableList.of());
+            given(booksService.findByAuthor(author)).willReturn(ImmutableList.of());
             assertThat(booksController.listBooksByAuthor(author)).isEqualTo(ResponseEntity.notFound().build());
         }
 
         @Test
-        void shouldReturnListOfBooksWhenAvailableForAnAuthor(@Mock final BookEntity bookEntity1,
-                                                             @Mock final BookEntity bookEntity2,
-                                                             @Mock final Book book1,
+        void shouldReturnListOfBooksWhenAvailableForAnAuthor(@Mock final Book book1,
                                                              @Mock final Book book2) {
-            final ImmutableList<BookEntity> bookEntities = ImmutableList.of(bookEntity1, bookEntity2);
             final ImmutableList<Book> books = ImmutableList.of(book1, book2);
-            given(bookRepository.findByAuthor(author)).willReturn(bookEntities);
+            given(booksService.findByAuthor(author)).willReturn(books);
             assertThat(booksController.listBooksByAuthor(author)).isEqualTo(ResponseEntity.ok(books));
         }
     }
@@ -108,26 +101,23 @@ class BooksControllerTest {
         @Test
         void genreMustNotBeNull() {
             assertThatNullPointerException()
-                    .isThrownBy(() ->  booksController.listBooksByGenre(null))
+                    .isThrownBy(() -> booksController.listBooksByGenre(null))
                     .withMessage("genre must not be blank");
         }
 
         @Test
         void shouldReturnNotFoundResponseWhenNoBooksAvailableForAGenre() {
-            given(bookRepository.findByGenre(A_GENRE)).willReturn(ImmutableList.of());
+            given(booksService.findByGenre(A_GENRE)).willReturn(ImmutableList.of());
             assertThat(booksController.listBooksByGenre(A_GENRE)).isEqualTo(ResponseEntity.notFound().build());
         }
 
         @ParameterizedTest
         @ValueSource(strings = {"MYSTERY", "THRILLER", "HORROR", "FICTION", "COMEDY", "BIOGRAPHY", "ROMANCE", "ACTION", "FANTASY"})
         void shouldReturnListOfBooksWhenAvailableForAGenre(final String genre,
-                                                           @Mock final BookEntity bookEntity1,
-                                                           @Mock final BookEntity bookEntity2,
                                                            @Mock final Book book1,
                                                            @Mock final Book book2) {
-            final ImmutableList<BookEntity> bookEntities = ImmutableList.of(bookEntity1, bookEntity2);
             final ImmutableList<Book> books = ImmutableList.of(book1, book2);
-            given(bookRepository.findByGenre(genre)).willReturn(bookEntities);
+            given(booksService.findByGenre(genre)).willReturn(books);
             assertThat(booksController.listBooksByGenre(genre)).isEqualTo(ResponseEntity.ok(books));
         }
     }

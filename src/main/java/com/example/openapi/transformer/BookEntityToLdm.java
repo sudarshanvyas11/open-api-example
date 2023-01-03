@@ -6,7 +6,6 @@ import com.example.openapi.repository.BookEntity;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-//TODO :: Implement this
 @Transformer
 public class BookEntityToLdm implements Transformable<BookEntity, Book> {
 
