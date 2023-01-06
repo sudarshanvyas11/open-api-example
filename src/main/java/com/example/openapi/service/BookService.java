@@ -26,7 +26,7 @@ public class BookService {
     }
 
     public Optional<Book> findByName(final String name) {
-        return bookRepository.findByName(notBlank(name, "name must not be blank"))
+        return bookRepository.findByTitle(notBlank(name, "name must not be blank"))
                 .map(bookEntityToLdm::transform);
     }
 }

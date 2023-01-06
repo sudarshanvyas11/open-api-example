@@ -7,8 +7,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+
+import java.util.List;
 
 @Entity
 @Table(name = "publisher")
@@ -25,18 +29,22 @@ public class PublisherEntity {
     @Column
     private String email;
 
-    @Column
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private AddressEntity address;
 
     @Column
     private String website;
 
-    public PublisherEntity(final String name, final String email, final AddressEntity address, final String website) {
+    @OneToMany(mappedBy = "publisher")
+    private List<BookEntity> books;
+
+    public PublisherEntity(final String name, final String email, final AddressEntity address, final String website, final List<BookEntity> books) {
         this.name = name;
         this.email = email;
         this.address = address;
         this.website = website;
+        this.books = books;
     }
 
     public Long getId() {
@@ -57,5 +65,9 @@ public class PublisherEntity {
 
     public String getWebsite() {
         return website;
+    }
+
+    public List<BookEntity> getBooks() {
+        return books;
     }
 }

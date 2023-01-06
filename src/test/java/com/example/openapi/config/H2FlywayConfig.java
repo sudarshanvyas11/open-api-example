@@ -19,11 +19,11 @@ public class H2FlywayConfig {
     }
 
     @Bean
-    public Flyway flyway(final DataSource h2DataSource,
+    public Flyway flyway(final DataSource dataSource,
                          final String[] flywayLocations) {
         return Flyway.configure()
                 .defaultSchema("library")
-                .dataSource(h2DataSource)
+                .dataSource(dataSource)
                 .locations(flywayLocations)
                 .load();
     }

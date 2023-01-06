@@ -99,7 +99,7 @@ class BookServiceTest {
 
         @Test
         void returnsOptionalEmptyWhenNoBookFoundForName() {
-            given(bookRepository.findByName(BOOK_NAME)).willReturn(Optional.empty());
+            given(bookRepository.findByTitle(BOOK_NAME)).willReturn(Optional.empty());
 
             assertThat(bookService.findByName(BOOK_NAME)).isEmpty();
 
@@ -110,7 +110,7 @@ class BookServiceTest {
         @Test
         void returnsOptionalBookWhenFoundForAnId(@Mock final BookEntity bookEntity,
                                                  @Mock final Book book) {
-            given(bookRepository.findByName(BOOK_NAME)).willReturn(Optional.of(bookEntity));
+            given(bookRepository.findByTitle(BOOK_NAME)).willReturn(Optional.of(bookEntity));
             given(bookEntityToLdm.transform(bookEntity)).willReturn(book);
 
             assertThat(bookService.findByName(BOOK_NAME)).contains(book);

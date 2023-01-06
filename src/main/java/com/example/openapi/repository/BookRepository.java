@@ -10,7 +10,7 @@ import java.util.Optional;
 //TODO :: Make IT tests work
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
-    Optional<BookEntity> findByName(String bookName);
+    Optional<BookEntity> findByTitle(String title);
 
     List<BookEntity> findByAuthor(Author author);
 

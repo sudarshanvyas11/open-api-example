@@ -4,6 +4,7 @@ import com.example.openapi.model.Address;
 import com.example.openapi.model.Publisher;
 import com.example.openapi.repository.AddressEntity;
 import com.example.openapi.repository.PublisherEntity;
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class PublisherEntityToLdmTest {
                                              @Mock final Address address) {
         given(addressEntityToLdm.transform(addressEntity)).willReturn(address);
 
-        final PublisherEntity entity = new PublisherEntity(PUBLISHER, EMAIL, addressEntity, WEBSITE);
+        final PublisherEntity entity = new PublisherEntity(PUBLISHER, EMAIL, addressEntity, WEBSITE, ImmutableList.of());
         final Publisher ldm = new Publisher();
         ldm.setId(1L);
         ldm.setName(PUBLISHER);

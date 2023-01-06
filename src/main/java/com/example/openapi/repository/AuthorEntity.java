@@ -25,8 +25,7 @@ public class AuthorEntity {
     @Column
     private String lastName;
 
-    @Column
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "author")
     private List<BookEntity> books;
 
     public AuthorEntity(final String firstName, final String lastName, final List<BookEntity> books) {
