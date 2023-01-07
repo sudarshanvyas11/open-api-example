@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS
-library.address
+address
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     first_line  VARCHAR(100) NOT NULL,

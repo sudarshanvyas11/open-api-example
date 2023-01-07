@@ -47,6 +47,10 @@ public class PublisherEntity {
         this.books = books;
     }
 
+    //Required for JPA
+    public PublisherEntity() {
+    }
+
     public Long getId() {
         return id;
     }

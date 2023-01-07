@@ -80,28 +80,28 @@ class BookServiceTest {
     }
 
     @Nested
-    class FindByName {
+    class FindByTitle {
 
         @ParameterizedTest
         @EmptySource
-        void nameMustNotBeBlank(final String name) {
+        void titleMustNotBeBlank(final String title) {
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> bookService.findByName(name))
-                    .withMessage("name must not be blank");
+                    .isThrownBy(() -> bookService.findByTitle(title))
+                    .withMessage("title must not be blank");
         }
 
         @Test
-        void nameMustNotBeNull() {
+        void titleMustNotBeNull() {
             assertThatNullPointerException()
-                    .isThrownBy(() -> bookService.findByName(null))
-                    .withMessage("name must not be blank");
+                    .isThrownBy(() -> bookService.findByTitle(null))
+                    .withMessage("title must not be blank");
         }
 
         @Test
         void returnsOptionalEmptyWhenNoBookFoundForName() {
             given(bookRepository.findByTitle(BOOK_NAME)).willReturn(Optional.empty());
 
-            assertThat(bookService.findByName(BOOK_NAME)).isEmpty();
+            assertThat(bookService.findByTitle(BOOK_NAME)).isEmpty();
 
             then(bookEntityToLdm).shouldHaveNoInteractions();
             then(bookRepository).shouldHaveNoMoreInteractions();
@@ -113,7 +113,7 @@ class BookServiceTest {
             given(bookRepository.findByTitle(BOOK_NAME)).willReturn(Optional.of(bookEntity));
             given(bookEntityToLdm.transform(bookEntity)).willReturn(book);
 
-            assertThat(bookService.findByName(BOOK_NAME)).contains(book);
+            assertThat(bookService.findByTitle(BOOK_NAME)).contains(book);
 
             then(bookEntityToLdm).shouldHaveNoMoreInteractions();
             then(bookRepository).shouldHaveNoMoreInteractions();

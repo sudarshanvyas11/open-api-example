@@ -83,13 +83,13 @@ class BookControllerTest {
 
         @Test
         void shouldReturnNotFoundStatusWhenNoBookAvailableByName() {
-            given(bookService.findByName(NAME)).willReturn(Optional.empty());
+            given(bookService.findByTitle(NAME)).willReturn(Optional.empty());
             assertThat(bookController.getBookByName(NAME)).isEqualTo(ResponseEntity.notFound().build());
         }
 
         @Test
         void shouldReturnABookForAProvidedName(@Mock final Book book) {
-            given(bookService.findByName(NAME)).willReturn(Optional.of(book));
+            given(bookService.findByTitle(NAME)).willReturn(Optional.of(book));
             assertThat(bookController.getBookByName(NAME)).isEqualTo(ResponseEntity.ok(book));
         }
     }

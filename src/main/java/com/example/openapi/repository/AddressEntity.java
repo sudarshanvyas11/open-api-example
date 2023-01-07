@@ -39,6 +39,10 @@ public class AddressEntity {
         this.country = country;
     }
 
+    //Required for JPA
+    public AddressEntity() {
+    }
+
     public Long getId() {
         return id;
     }

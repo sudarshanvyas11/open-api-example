@@ -24,11 +24,11 @@ public class BookEntity {
     @Column
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private AuthorEntity author;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "publisher_id", referencedColumnName = "id", nullable = false)
     private PublisherEntity publisher;
 
@@ -40,6 +40,10 @@ public class BookEntity {
         this.author = author;
         this.publisher = publisher;
         this.genre = genre;
+    }
+
+    //Required for JPA
+    public BookEntity() {
     }
 
     public Long getId() {

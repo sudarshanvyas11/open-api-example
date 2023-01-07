@@ -2,8 +2,10 @@ package com.example.openapi.service;
 
 import com.example.openapi.model.Author;
 import com.example.openapi.model.Book;
+import com.example.openapi.repository.AuthorEntity;
 import com.example.openapi.repository.BookEntity;
 import com.example.openapi.repository.BookRepository;
+import com.example.openapi.transformer.AuthorLdmToEntity;
 import com.example.openapi.transformer.BookEntityToLdm;
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,12 +30,14 @@ class BooksServiceTest {
     private BookEntityToLdm bookEntityToLdm;
     @Mock
     private BookRepository bookRepository;
+    @Mock
+    private AuthorLdmToEntity authorLdmToEntity;
 
     private BooksService booksService;
 
     @BeforeEach
     void setUp() {
-        booksService = new BooksService(bookRepository, bookEntityToLdm);
+        booksService = new BooksService(bookRepository, bookEntityToLdm, authorLdmToEntity);
     }
 
     @Nested
@@ -41,15 +45,22 @@ class BooksServiceTest {
         @Test
         void bookRepositoryMustNotBeNull() {
             assertThatNullPointerException()
-                    .isThrownBy(() -> new BooksService(null, bookEntityToLdm))
+                    .isThrownBy(() -> new BooksService(null, bookEntityToLdm, authorLdmToEntity))
                     .withMessage("bookRepository must not be null");
         }
 
         @Test
         void bookEntityToLdmMustNotBeNull() {
             assertThatNullPointerException()
-                    .isThrownBy(() -> new BooksService(bookRepository, null))
+                    .isThrownBy(() -> new BooksService(bookRepository, null, authorLdmToEntity))
                     .withMessage("bookEntityToLdm must not be null");
+        }
+
+        @Test
+        void authorLdmToEntityMustNotBeNull() {
+            assertThatNullPointerException()
+                    .isThrownBy(() -> new BooksService(bookRepository, bookEntityToLdm, null))
+                    .withMessage("authorLdmToEntity must not be null");
         }
     }
 
@@ -89,8 +100,10 @@ class BooksServiceTest {
         }
 
         @Test
-        void returnsAnEmptyListWhenNoBooksFoundForAnAuthor(@Mock final Author author) {
-            given(bookRepository.findByAuthor(author)).willReturn(ImmutableList.of());
+        void returnsAnEmptyListWhenNoBooksFoundForAnAuthor(@Mock final Author author,
+                                                           @Mock final AuthorEntity authorEntity) {
+            given(authorLdmToEntity.transform(author)).willReturn(authorEntity);
+            given(bookRepository.findByAuthor(authorEntity)).willReturn(ImmutableList.of());
             assertThat(booksService.findByAuthor(author)).isEmpty();
 
             then(bookEntityToLdm).shouldHaveNoInteractions();
@@ -99,9 +112,11 @@ class BooksServiceTest {
 
         @Test
         void shouldFindAllBooksForAnAuthor(@Mock final Author author,
+                                           @Mock final AuthorEntity authorEntity,
                                            @Mock final BookEntity bookEntity,
                                            @Mock final Book book) {
-            given(bookRepository.findByAuthor(author)).willReturn(ImmutableList.of(bookEntity));
+            given(authorLdmToEntity.transform(author)).willReturn(authorEntity);
+            given(bookRepository.findByAuthor(authorEntity)).willReturn(ImmutableList.of(bookEntity));
             given(bookEntityToLdm.transform(bookEntity)).willReturn(book);
 
             assertThat(booksService.findByAuthor(author)).containsExactly(book);
