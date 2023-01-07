@@ -12,11 +12,11 @@ import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 @MockitoSettings
 class AddressEntityToLdmTest {
 
-    public static final String FIRST_LINE = "First";
-    public static final String SECOND_LINE = "Second";
-    public static final String POST_CODE = "ABCDEF";
-    public static final String CITY = "City";
-    public static final String COUNTRY = "Country";
+    private static final String FIRST_LINE = "First";
+    private static final String SECOND_LINE = "Second";
+    private static final String POST_CODE = "ABCDEF";
+    private static final String CITY = "City";
+    private static final String COUNTRY = "Country";
 
     @Nested
     class Preconditions {

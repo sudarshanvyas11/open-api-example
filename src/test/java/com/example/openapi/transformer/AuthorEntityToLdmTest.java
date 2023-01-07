@@ -15,8 +15,8 @@ import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 @MockitoSettings
 class AuthorEntityToLdmTest {
 
-    public static final String FIRST_NAME = "First Name";
-    public static final String LAST_NAME = "Last Name";
+    private static final String FIRST_NAME = "First Name";
+    private static final String LAST_NAME = "Last Name";
 
     @Nested
     class Preconditions {

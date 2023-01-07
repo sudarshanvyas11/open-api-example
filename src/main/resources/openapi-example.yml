@@ -152,7 +152,7 @@ paths:
                   $ref: '#/components/schemas/Book'
         '404':
           description: No book found for author
-  /books/{genre}:
+  /books/genre/{genre}:
     get:
       summary: List All books by genre
       description: Get a book, will include book that is currently unavailable
@@ -178,7 +178,7 @@ paths:
                   $ref: '#/components/schemas/Book'
         '404':
           description: No book found by name
-  /book/{id}:
+  /book/id/{id}:
     get:
       summary: Get book
       description: Get a book, will include book that is currently unavailable
@@ -202,7 +202,7 @@ paths:
                 $ref: '#/components/schemas/Book'
         '404':
           description: No book found by name
-  /book/{name}:
+  /book/name/{name}:
     get:
       summary: Find book by name
       description: Find a book by provided name, will include book that is currently unavailable
