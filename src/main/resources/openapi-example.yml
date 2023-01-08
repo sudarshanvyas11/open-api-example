@@ -129,7 +129,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Book'
   /books/author:
-    get:
+    post:
       summary: List All Books By Author
       description: List all books registered in a library by Author Name, will include books that are currently unavailable
       operationId: listBooksByAuthor
