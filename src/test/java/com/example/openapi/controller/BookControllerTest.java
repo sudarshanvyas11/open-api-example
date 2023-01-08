@@ -20,7 +20,7 @@ import static org.mockito.BDDMockito.given;
 
 @MockitoSettings
 class BookControllerTest {
-    private static final String NAME = "Book name";
+    private static final String TITLE = "Book title";
     private static final long ID = 1L;
     @Mock
     private BookService bookService;
@@ -68,29 +68,29 @@ class BookControllerTest {
     class GetBookByName {
         @ParameterizedTest
         @EmptySource
-        void nameMustNotBeBlank(final String name) {
+        void titleMustNotBeBlank(final String title) {
             assertThatIllegalArgumentException()
-                    .isThrownBy(() -> bookController.getBookByName(name))
-                    .withMessage("name must not be blank");
+                    .isThrownBy(() -> bookController.getBookByTitle(title))
+                    .withMessage("title must not be blank");
         }
 
         @Test
         void nameMustNotBeNull() {
             assertThatNullPointerException()
-                    .isThrownBy(() -> bookController.getBookByName(null))
-                    .withMessage("name must not be blank");
+                    .isThrownBy(() -> bookController.getBookByTitle(null))
+                    .withMessage("title must not be blank");
         }
 
         @Test
         void shouldReturnNotFoundStatusWhenNoBookAvailableByName() {
-            given(bookService.findByTitle(NAME)).willReturn(Optional.empty());
-            assertThat(bookController.getBookByName(NAME)).isEqualTo(ResponseEntity.notFound().build());
+            given(bookService.findByTitle(TITLE)).willReturn(Optional.empty());
+            assertThat(bookController.getBookByTitle(TITLE)).isEqualTo(ResponseEntity.notFound().build());
         }
 
         @Test
         void shouldReturnABookForAProvidedName(@Mock final Book book) {
-            given(bookService.findByTitle(NAME)).willReturn(Optional.of(book));
-            assertThat(bookController.getBookByName(NAME)).isEqualTo(ResponseEntity.ok(book));
+            given(bookService.findByTitle(TITLE)).willReturn(Optional.of(book));
+            assertThat(bookController.getBookByTitle(TITLE)).isEqualTo(ResponseEntity.ok(book));
         }
     }
 }

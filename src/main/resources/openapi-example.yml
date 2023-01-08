@@ -202,26 +202,26 @@ paths:
                 $ref: '#/components/schemas/Book'
         '404':
           description: No book found by name
-  /book/name/{name}:
+  /book/title/{title}:
     get:
-      summary: Find book by name
-      description: Find a book by provided name, will include book that is currently unavailable
-      operationId: getBookByName
+      summary: Find book by title
+      description: Find a book by provided title, will include book that is currently unavailable
+      operationId: getBookByTitle
       tags:
         - book
       parameters:
         - in: path
-          name: name
+          name: title
           schema:
             type: string
           required: true
-          description: Name of book to be searched
+          description: Title of book to be searched
       responses:
         '200':
-          description: Book by name
+          description: Book by title
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Book'
         '404':
-          description: No book found by name
+          description: No book found by title

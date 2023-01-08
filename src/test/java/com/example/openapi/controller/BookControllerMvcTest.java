@@ -56,7 +56,7 @@ class BookControllerMvcTest {
         @Test
         void returnsNotFoundStatusWhenNoBookFoundById() throws Exception {
             given(bookService.findById(1L)).willReturn(Optional.empty());
-            mockMvc.perform(get("/book?id=1"))
+            mockMvc.perform(get("/book/id/1"))
                     .andExpect(status().isNotFound());
         }
 
@@ -66,6 +66,34 @@ class BookControllerMvcTest {
 
             given(bookService.findById(1L)).willReturn(Optional.of(book));
             final String response = mockMvc.perform(get("/book/id/1"))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+            final Book actual = objectMapper.readValue(response, Book.class);
+
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .isEqualTo(book);
+        }
+    }
+
+    @Nested
+    class GetBookByTitle {
+        @Test
+        void returnsNotFoundStatusWhenNoBookFoundByTitle() throws Exception {
+            given(bookService.findByTitle(TITLE)).willReturn(Optional.empty());
+            mockMvc.perform(get("/book/title/" + TITLE))
+                    .andExpect(status().isNotFound());
+        }
+
+        @Test
+        void shouldReturnBookFoundById() throws Exception {
+            final Book book = getBook();
+
+            given(bookService.findByTitle(TITLE)).willReturn(Optional.of(book));
+            final String response = mockMvc.perform(get("/book/title/" + TITLE))
                     .andExpect(status().isOk())
                     .andReturn()
                     .getResponse()

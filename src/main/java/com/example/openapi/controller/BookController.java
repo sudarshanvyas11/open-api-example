@@ -26,9 +26,9 @@ public class BookController implements BookApi {
     }
 
     @Override
-    public ResponseEntity<Book> getBookByName(final String name) {
-        notBlank(name, "name must not be blank");
-        return bookService.findByTitle(name)
+    public ResponseEntity<Book> getBookByTitle(final String title) {
+        notBlank(title, "title must not be blank");
+        return bookService.findByTitle(title)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
