@@ -2,10 +2,23 @@ pipeline {
     agent{
         docker {
             image 'maven:3.8.7-eclipse-temurin-17'
+            args '-v $HOME/.m2:/root/.m2'
         }
     }
     stages{
-        stage('build') {
+        stage('compile') {
+            steps {
+                sh '''
+                    mvn -B -DskipTests clean compile
+                   '''
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('package') {
             steps {
                 sh '''
                     mvn -B -DskipTests clean package
@@ -14,15 +27,13 @@ pipeline {
                    '''
             }
         }
-        stage('test') {
-                    steps {
-                        sh 'mvn test'
-                    }
-                }
-                stage('deploy') {
-                    steps {
-                        sh 'java -jar /home/sudarshan/projects/open-api/open-api-example.jar --spring.profiles.active=mysql &'
-                    }
-                }
+        stage('docker build') {
+            steps {
+                sh '''
+                    docker pull mysql/mysql-server:latest
+                    docker run --detach --name=open-api-mysql --env="MYSQL_TCP_PORT=3306" -d mysql/mysql-server:latest
+                   '''
+            }
+        }
     }
 }
