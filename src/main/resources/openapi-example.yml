@@ -129,7 +129,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Book'
   /books/author:
-    get:
+    post:
       summary: List All Books By Author
       description: List all books registered in a library by Author Name, will include books that are currently unavailable
       operationId: listBooksByAuthor
@@ -152,7 +152,7 @@ paths:
                   $ref: '#/components/schemas/Book'
         '404':
           description: No book found for author
-  /book/{genre}:
+  /books/genre/{genre}:
     get:
       summary: List All books by genre
       description: Get a book, will include book that is currently unavailable
@@ -178,7 +178,7 @@ paths:
                   $ref: '#/components/schemas/Book'
         '404':
           description: No book found by name
-  /book/{id}:
+  /book/id/{id}:
     get:
       summary: Get book
       description: Get a book, will include book that is currently unavailable
@@ -202,26 +202,26 @@ paths:
                 $ref: '#/components/schemas/Book'
         '404':
           description: No book found by name
-  /book/{name}:
+  /book/title/{title}:
     get:
-      summary: Find book by name
-      description: Find a book by provided name, will include book that is currently unavailable
-      operationId: getBookByName
+      summary: Find book by title
+      description: Find a book by provided title, will include book that is currently unavailable
+      operationId: getBookByTitle
       tags:
         - book
       parameters:
         - in: path
-          name: name
+          name: title
           schema:
             type: string
           required: true
-          description: Name of book to be searched
+          description: Title of book to be searched
       responses:
         '200':
-          description: Book by name
+          description: Book by title
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Book'
         '404':
-          description: No book found by name
+          description: No book found by title
