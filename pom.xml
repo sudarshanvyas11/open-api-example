@@ -20,6 +20,7 @@
 
         <assertj-core.version>3.24.1</assertj-core.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <cucumber.version>7.10.1</cucumber.version>
         <flyway-core.version>9.10.2</flyway-core.version>
         <guava.version>31.1-jre</guava.version>
         <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
@@ -139,6 +140,24 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
