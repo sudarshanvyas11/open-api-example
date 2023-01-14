@@ -28,7 +28,7 @@ Feature: Getting book details
     Given There are books available
       | Title                            | Genre   |
       | Defeating Shao Kahn - My memoirs | ROMANCE |
-    When Book is requested for ID 1
+    When Book is requested for ID 2
     Then Response is OK and book found
       | Title                            | Genre   | Author First Name | Author Last Name | Publisher Name | Publisher Email     | Publisher Website | Publisher Address - First Line | Publisher Address - Postcode | Publisher Address - City | Publisher Address - Country |
       | Defeating Shao Kahn - My memoirs | ROMANCE | Liu               | Kang             | NetherRealm    | neatherrealm@mk.com | mk.com            | Eternal                        | UNDEAD                       | Damnation                | Outworld                    |
