@@ -12,6 +12,7 @@ import com.example.openapi.repository.PublisherEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,11 @@ public class BookStepdefs {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Before
+    public void clearTables() {
+        bookRepository.deleteAll();
+    }
 
     @Given("There are no books available")
     public void thereAreNoBooksAvailable() {
@@ -103,10 +110,14 @@ public class BookStepdefs {
     }
 
 
+    @When("Book is requested for Genre {word}")
+    public void bookIsRequestedForGenre(final String genre) throws Exception {
+        result = mockMvc.perform(get("/books/genre/" + genre));
+    }
+
     @When("Book is requested for ID {int}")
     public void bookIsRequestedForID(int id) throws Exception {
         result = mockMvc.perform(get("/book/id/" + id));
-
     }
 
     @Then("Response is Not Found")
@@ -127,6 +138,21 @@ public class BookStepdefs {
         assertThat(book).usingRecursiveComparison()
                 .ignoringFields("id", "author.id", "publisher.id", "publisher.address.id")
                 .isEqualTo(expected);
+    }
+
+    @Then("Response is OK and books found")
+    public void responseIsOKAndBooksFound(final DataTable dataTable) throws Exception {
+        final Book[] expected = dataTable.asMaps().stream()
+                .map(this::createBookFromMap)
+                .collect(ImmutableList.toImmutableList()).toArray(Book[]::new);
+
+        final String content = result.andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        final List<Book> books = Arrays.asList(objectMapper.readValue(content, Book[].class));
+        assertThat(books)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "author.id", "publisher.id", "publisher.address.id")
+                .containsExactlyInAnyOrder(expected);
     }
 
     private Book createBookFromMap(final Map<String, String> bookMap) {
