@@ -2,6 +2,8 @@ package com.example.openapi.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -42,7 +44,13 @@ public class Author {
     @JsonPOJOBuilder
     public static class Builder {
         private long id;
+
+        @NotBlank
+        @Size(min = 1, max = 100)
         private String firstName;
+
+        @NotBlank
+        @Size(min = 1, max = 100)
         private String lastName;
         private List<Book> books;
 

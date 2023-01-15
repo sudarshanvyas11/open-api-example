@@ -2,13 +2,24 @@ package com.example.openapi.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @JsonDeserialize(builder = Address.Builder.class)
 public class Address {
     private final long id;
+
+    @NotBlank
+    @Size(min = 1, max = 100)
     private final String firstLine;
     private final String secondLine;
+
+    @NotBlank
+    @Size(min = 1, max = 20)
     private final String postCode;
+
+    @NotBlank
+    @Size(min = 1, max = 50)
     private final String city;
     private final String country;
 

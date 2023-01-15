@@ -2,14 +2,22 @@ package com.example.openapi.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @JsonDeserialize(builder = Book.Builder.class)
 public class Book {
 
     private final long id;
+
+    @NotBlank
+    @Size(min = 1, max = 100)
     private final String title;
     private final Author author;
     private final Publisher publisher;
+
+    @NotBlank
+    @Size(min = 1, max = 20)
     private final Genre genre;
 
     private Book(final Builder builder) {
