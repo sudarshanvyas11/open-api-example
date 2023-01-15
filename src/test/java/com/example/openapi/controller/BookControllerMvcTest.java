@@ -3,6 +3,7 @@ package com.example.openapi.controller;
 import com.example.openapi.model.Address;
 import com.example.openapi.model.Author;
 import com.example.openapi.model.Book;
+import com.example.openapi.model.Genre;
 import com.example.openapi.model.Publisher;
 import com.example.openapi.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -108,31 +109,34 @@ class BookControllerMvcTest {
     }
 
     private static Book getBook() {
-        final Address address = new Address();
-        address.setId(1L);
-        address.setFirstLine(FIRST_LINE);
-        address.setSecondLine(SECOND_LINE);
-        address.setPostCode(POST_CODE);
-        address.setCity(CITY);
-        address.setCountry(COUNTRY);
+        final Address address = Address.builder()
+                .withId(1L)
+                .withFirstLine(FIRST_LINE)
+                .withSecondLine(SECOND_LINE)
+                .withPostCode(POST_CODE)
+                .withCity(CITY)
+                .withCountry(COUNTRY)
+                .build();
 
-        final Author author = new Author();
-        author.setId(1L);
-        author.setFirstName(FIRST_NAME);
-        author.setLastName(LAST_NAME);
+        final Author author = Author.builder()
+                .withId(1L)
+                .withFirstName(FIRST_NAME)
+                .withLastName(LAST_NAME)
+                .build();
 
-        final Publisher publisher = new Publisher();
-        publisher.setId(1L);
-        publisher.setName(PUBLISHER);
-        publisher.setEmail(EMAIL);
-        publisher.setAddress(address);
-        publisher.setWebsite(WEBSITE);
+        final Publisher publisher = Publisher.builder()
+                .withId(1L)
+                .withName(PUBLISHER)
+                .withEmail(EMAIL)
+                .withAddress(address)
+                .withWebsite(WEBSITE)
+                .build();
 
-        final Book book = new Book();
-        book.setTitle(TITLE);
-        book.setAuthor(author);
-        book.setPublisher(publisher);
-        book.setGenre(Book.GenreEnum.ACTION);
-        return book;
+        return Book.builder()
+                .withTitle(TITLE)
+                .withAuthor(author)
+                .withPublisher(publisher)
+                .withGenre(Genre.ACTION)
+                .build();
     }
 }

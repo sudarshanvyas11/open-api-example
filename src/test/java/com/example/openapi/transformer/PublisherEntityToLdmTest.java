@@ -4,7 +4,6 @@ import com.example.openapi.model.Address;
 import com.example.openapi.model.Publisher;
 import com.example.openapi.repository.AddressEntity;
 import com.example.openapi.repository.PublisherEntity;
-import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,6 +17,7 @@ import static org.mockito.BDDMockito.given;
 @MockitoSettings
 class PublisherEntityToLdmTest {
 
+    private static final long ID = 1L;
     private static final String PUBLISHER = "Publisher";
     private static final String EMAIL = "publisher@publisher.com";
     private static final String WEBSITE = "publisher.com";
@@ -55,16 +55,23 @@ class PublisherEntityToLdmTest {
 
     @Test
     void shouldTransformPublisherEntityToLdm(@Mock final AddressEntity addressEntity,
-                                             @Mock final Address address) {
+                                             @Mock final Address address,
+                                             @Mock final PublisherEntity entity) {
         given(addressEntityToLdm.transform(addressEntity)).willReturn(address);
+        given(entity.getId()).willReturn(ID);
+        given(entity.getName()).willReturn(PUBLISHER);
+        given(entity.getEmail()).willReturn(EMAIL);
+        given(entity.getAddress()).willReturn(addressEntity);
+        given(entity.getWebsite()).willReturn(WEBSITE);
 
-        final PublisherEntity entity = new PublisherEntity(PUBLISHER, EMAIL, addressEntity, WEBSITE, ImmutableList.of());
-        final Publisher ldm = new Publisher();
-        ldm.setId(1L);
-        ldm.setName(PUBLISHER);
-        ldm.setEmail(EMAIL);
-        ldm.setAddress(address);
-        ldm.setWebsite(WEBSITE);
+        final Publisher ldm = Publisher.builder()
+                .withId(ID)
+                .withName(PUBLISHER)
+                .withEmail(EMAIL)
+                .withAddress(address)
+                .withWebsite(WEBSITE)
+                .build();
+
         assertThat(publisherEntityToLdm.transform(entity))
                 .usingRecursiveComparison()
                 .ignoringFields("id")

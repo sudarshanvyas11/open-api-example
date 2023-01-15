@@ -17,12 +17,12 @@ public class PublisherEntityToLdm implements Transformable<PublisherEntity, Publ
 
     public Publisher transform(PublisherEntity publisherEntity) {
         notNull(publisherEntity, "publisherEntity must not be null");
-        final Publisher publisher = new Publisher();
-        publisher.setId(publisherEntity.getId());
-        publisher.setName(publisherEntity.getName());
-        publisher.setEmail(publisherEntity.getEmail());
-        publisher.setWebsite(publisherEntity.getWebsite());
-        publisher.setAddress(addressEntityToLdm.transform(publisherEntity.getAddress()));
-        return publisher;
+        return Publisher.builder()
+                .withId(publisherEntity.getId())
+                .withName(publisherEntity.getName())
+                .withEmail(publisherEntity.getEmail())
+                .withWebsite(publisherEntity.getWebsite())
+                .withAddress(addressEntityToLdm.transform(publisherEntity.getAddress()))
+                .build();
     }
 }

@@ -4,14 +4,17 @@ import com.example.openapi.model.Address;
 import com.example.openapi.repository.AddressEntity;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+import static org.mockito.BDDMockito.given;
 
 @MockitoSettings
 class AddressEntityToLdmTest {
 
+    private static final long ID = 1L;
     private static final String FIRST_LINE = "First";
     private static final String SECOND_LINE = "Second";
     private static final String POST_CODE = "ABCDEF";
@@ -29,15 +32,22 @@ class AddressEntityToLdmTest {
     }
 
     @Test
-    void shouldTransformAddressEntityToLdm() {
-        final AddressEntity entity = new AddressEntity(FIRST_LINE, SECOND_LINE, POST_CODE, CITY, COUNTRY);
-        final Address ldm = new Address();
-        ldm.setId(1L);
-        ldm.setFirstLine(FIRST_LINE);
-        ldm.setSecondLine(SECOND_LINE);
-        ldm.setPostCode(POST_CODE);
-        ldm.setCity(CITY);
-        ldm.setCountry(COUNTRY);
+    void shouldTransformAddressEntityToLdm(@Mock final AddressEntity entity) {
+        given(entity.getId()).willReturn(ID);
+        given(entity.getFirstLine()).willReturn(FIRST_LINE);
+        given(entity.getSecondLine()).willReturn(SECOND_LINE);
+        given(entity.getPostCode()).willReturn(POST_CODE);
+        given(entity.getCity()).willReturn(CITY);
+        given(entity.getCountry()).willReturn(COUNTRY);
+
+        final Address ldm = Address.builder()
+                .withId(ID)
+                .withFirstLine(FIRST_LINE)
+                .withSecondLine(SECOND_LINE)
+                .withPostCode(POST_CODE)
+                .withCity(CITY)
+                .withCountry(COUNTRY).build();
+
         assertThat(new AddressEntityToLdm().transform(entity))
                 .usingRecursiveComparison()
                 .ignoringFields("id")

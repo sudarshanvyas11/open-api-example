@@ -188,32 +188,33 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-failsafe-plugin.version}</version>
             </plugin>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>${openapi-generator-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>
-                                ${project.basedir}/src/main/resources/openapi-example.yml
-                            </inputSpec>
-                            <generatorName>spring</generatorName>
-                            <apiPackage>com.example.openapi.api</apiPackage>
-                            <modelPackage>com.example.openapi.model</modelPackage>
-                            <configOptions>
-                                <interfaceOnly>true</interfaceOnly>
-                                <library>spring-cloud</library>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <useTags>true</useTags>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!-- To demonstrate writing API and models manually to generate Api specs-->
+            <!--            <plugin>
+                            <groupId>org.openapitools</groupId>
+                            <artifactId>openapi-generator-maven-plugin</artifactId>
+                            <version>${openapi-generator-maven-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <goals>
+                                        <goal>generate</goal>
+                                    </goals>
+                                    <configuration>
+                                        <inputSpec>
+                                            ${project.basedir}/src/main/resources/openapi-example.yml
+                                        </inputSpec>
+                                        <generatorName>spring</generatorName>
+                                        <apiPackage>com.example.openapi.api</apiPackage>
+                                        <modelPackage>com.example.openapi.model</modelPackage>
+                                        <configOptions>
+                                            <interfaceOnly>true</interfaceOnly>
+                                            <library>spring-cloud</library>
+                                            <useSpringBoot3>true</useSpringBoot3>
+                                            <useTags>true</useTags>
+                                        </configOptions>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>-->
         </plugins>
     </build>
 </project>

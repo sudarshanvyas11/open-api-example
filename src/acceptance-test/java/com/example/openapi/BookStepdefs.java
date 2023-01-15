@@ -3,6 +3,7 @@ package com.example.openapi;
 import com.example.openapi.model.Address;
 import com.example.openapi.model.Author;
 import com.example.openapi.model.Book;
+import com.example.openapi.model.Genre;
 import com.example.openapi.model.Publisher;
 import com.example.openapi.repository.AddressEntity;
 import com.example.openapi.repository.AuthorEntity;
@@ -136,7 +137,7 @@ public class BookStepdefs {
 
         final Book book = objectMapper.readValue(content, Book.class);
         assertThat(book).usingRecursiveComparison()
-                .ignoringFields("id", "author.id", "publisher.id", "publisher.address.id")
+                .ignoringFields("id", "author.id", "author.books", "publisher.id", "publisher.books", "publisher.address.id")
                 .isEqualTo(expected);
     }
 
@@ -151,33 +152,35 @@ public class BookStepdefs {
 
         final List<Book> books = Arrays.asList(objectMapper.readValue(content, Book[].class));
         assertThat(books)
-                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "author.id", "publisher.id", "publisher.address.id")
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "author.id", "author.books", "publisher.id", "publisher.books", "publisher.address.id")
                 .containsExactlyInAnyOrder(expected);
     }
 
     private Book createBookFromMap(final Map<String, String> bookMap) {
-        final Address address = new Address();
-        address.setFirstLine(bookMap.get("Publisher Address - First Line"));
-        address.setSecondLine("");
-        address.setPostCode(bookMap.get("Publisher Address - Postcode"));
-        address.setCity(bookMap.get("Publisher Address - City"));
-        address.setCountry(bookMap.get("Publisher Address - Country"));
+        final Address address = Address.builder()
+                .withFirstLine(bookMap.get("Publisher Address - First Line"))
+                .withSecondLine("")
+                .withPostCode(bookMap.get("Publisher Address - Postcode"))
+                .withCity(bookMap.get("Publisher Address - City"))
+                .withCountry(bookMap.get("Publisher Address - Country"))
+                .build();
 
-        final Author author = new Author();
-        author.setFirstName(bookMap.get("Author First Name"));
-        author.setLastName(bookMap.get("Author Last Name"));
+        final Author author = Author.builder()
+                .withFirstName(bookMap.get("Author First Name"))
+                .withLastName(bookMap.get("Author Last Name"))
+                .build();
 
-        final Publisher publisher = new Publisher();
-        publisher.setName(bookMap.get("Publisher Name"));
-        publisher.setEmail(bookMap.get("Publisher Email"));
-        publisher.setAddress(address);
-        publisher.setWebsite(bookMap.get("Publisher Website"));
+        final Publisher publisher = Publisher.builder()
+                .withName(bookMap.get("Publisher Name"))
+                .withEmail(bookMap.get("Publisher Email"))
+                .withAddress(address)
+                .withWebsite(bookMap.get("Publisher Website"))
+                .build();
 
-        final Book book = new Book();
-        book.setTitle(bookMap.get("Title"));
-        book.setAuthor(author);
-        book.setPublisher(publisher);
-        book.setGenre(Book.GenreEnum.valueOf(bookMap.get("Genre")));
-        return book;
+        return Book.builder()
+                .withTitle(bookMap.get("Title"))
+                .withAuthor(author)
+                .withPublisher(publisher)
+                .withGenre(Genre.valueOf(bookMap.get("Genre"))).build();
     }
 }
