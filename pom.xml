@@ -207,7 +207,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- To demonstrate writing API and models manually to generate Api specs-->
+            <!-- To demonstrate writing API and models manually to generate Api specs, we will skip this-->
             <!--            <plugin>
                             <groupId>org.openapitools</groupId>
                             <artifactId>openapi-generator-maven-plugin</artifactId>
