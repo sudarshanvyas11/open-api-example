@@ -1,0 +1,1 @@
+INSERT INTO address VALUES (1, '20 New Wharf Road', '', 'N19RR', 'London', 'The United Kingdom');

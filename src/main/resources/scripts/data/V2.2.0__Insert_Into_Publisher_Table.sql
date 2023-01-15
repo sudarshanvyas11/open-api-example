@@ -1,0 +1,1 @@
+INSERT INTO publisher VALUES(1, 'Pan MacMillan', 'info@panmacmillan.com', 'www.panmacmillan.com', 1);

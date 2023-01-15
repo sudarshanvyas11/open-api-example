@@ -9,3 +9,4 @@ spring:
   flyway:
     locations:
       - classpath:scripts/book
+      - classpath:scripts/data
