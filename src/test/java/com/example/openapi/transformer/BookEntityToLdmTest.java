@@ -2,7 +2,7 @@ package com.example.openapi.transformer;
 
 import com.example.openapi.model.Author;
 import com.example.openapi.model.Book;
-import com.example.openapi.model.Book.GenreEnum;
+import com.example.openapi.model.Genre;
 import com.example.openapi.model.Publisher;
 import com.example.openapi.repository.AuthorEntity;
 import com.example.openapi.repository.BookEntity;
@@ -21,6 +21,7 @@ import static org.mockito.BDDMockito.given;
 @MockitoSettings
 class BookEntityToLdmTest {
 
+    private static final long ID = 1L;
     private static final String TITLE = "Title";
     @Mock
     private AuthorEntityToLdm authorEntityToLdm;
@@ -56,19 +57,31 @@ class BookEntityToLdmTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = GenreEnum.class)
-    void shouldTransformABookEntityToLdm(final GenreEnum genreEnum,
+    @EnumSource(value = Genre.class)
+    void shouldTransformABookEntityToLdm(final Genre genre,
+                                         @Mock final BookEntity bookEntity,
                                          @Mock final AuthorEntity authorEntity,
                                          @Mock final Author author,
                                          @Mock final PublisherEntity publisherEntity,
                                          @Mock final Publisher publisher) {
         given(authorEntityToLdm.transform(authorEntity)).willReturn(author);
         given(publisherEntityToLdm.transform(publisherEntity)).willReturn(publisher);
-        final Book book = new Book();
-        book.setTitle(TITLE);
-        book.setAuthor(author);
-        book.setPublisher(publisher);
-        book.setGenre(genreEnum);
-        assertThat(new BookEntityToLdm(authorEntityToLdm, publisherEntityToLdm).transform(new BookEntity(TITLE, authorEntity, publisherEntity, genreEnum.getValue()))).isEqualTo(book);
+        given(bookEntity.getId()).willReturn(ID);
+        given(bookEntity.getTitle()).willReturn(TITLE);
+        given(bookEntity.getAuthor()).willReturn(authorEntity);
+        given(bookEntity.getPublisher()).willReturn(publisherEntity);
+        given(bookEntity.getGenre()).willReturn(genre.name());
+
+        final Book book = Book.builder()
+                .withId(ID)
+                .withTitle(TITLE)
+                .withAuthor(author)
+                .withPublisher(publisher)
+                .withGenre(genre)
+                .build();
+
+        assertThat(new BookEntityToLdm(authorEntityToLdm, publisherEntityToLdm).transform(bookEntity))
+                .usingRecursiveComparison()
+                .isEqualTo(book);
     }
 }

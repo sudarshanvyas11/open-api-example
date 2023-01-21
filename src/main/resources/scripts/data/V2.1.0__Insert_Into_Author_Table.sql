@@ -1,0 +1,1 @@
+INSERT INTO author VALUES(1, 'Douglas', 'Adams');

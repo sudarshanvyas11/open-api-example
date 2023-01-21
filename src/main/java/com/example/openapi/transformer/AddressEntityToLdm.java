@@ -11,13 +11,13 @@ public class AddressEntityToLdm implements Transformable<AddressEntity, Address>
 
     public Address transform(final AddressEntity addressEntity) {
         notNull(addressEntity, "addressEntity must not be null");
-        final Address address = new Address();
-        address.setId(addressEntity.getId());
-        address.setFirstLine(addressEntity.getFirstLine());
-        address.setSecondLine(addressEntity.getSecondLine());
-        address.setPostCode(addressEntity.getPostCode());
-        address.setCity(addressEntity.getCity());
-        address.setCountry(addressEntity.getCountry());
-        return address;
+        return Address.builder()
+                .withId(addressEntity.getId())
+                .withFirstLine(addressEntity.getFirstLine())
+                .withSecondLine(addressEntity.getSecondLine())
+                .withPostCode(addressEntity.getPostCode())
+                .withCity(addressEntity.getCity())
+                .withCountry(addressEntity.getCountry())
+                .build();
     }
 }
