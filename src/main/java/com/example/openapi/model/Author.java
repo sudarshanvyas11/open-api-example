@@ -10,7 +10,13 @@ import java.util.List;
 @JsonDeserialize(builder = Author.Builder.class)
 public class Author {
     private final long id;
+
+    @NotBlank
+    @Size(min = 1, max = 100)
     private final String firstName;
+
+    @NotBlank
+    @Size(min = 1, max = 100)
     private final String lastName;
     private final List<Book> books;
 

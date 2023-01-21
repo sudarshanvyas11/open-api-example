@@ -7,7 +7,6 @@ import com.example.openapi.model.Publisher;
 import com.example.openapi.service.BooksService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +23,7 @@ import java.util.Arrays;
 
 import static com.example.openapi.model.Genre.ACTION;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -85,7 +85,6 @@ class BooksControllerMvcTest {
     }
 
     @Nested
-    @Disabled("Unable to hit the url correctly, figure out the issue")
     class ListBooksByAuthor {
         @Test
         void returnsNotFoundStatusWhenNoBookFoundForAnAuthor() throws Exception {
@@ -105,11 +104,10 @@ class BooksControllerMvcTest {
             final Book book = createBook();
             final String authorAsJson = objectMapper.writeValueAsString(createAuthor());
 
-            given(booksService.findByAuthor(createAuthor())).willReturn(ImmutableList.of(book));
+            given(booksService.findByAuthor(any(Author.class))).willReturn(ImmutableList.of(book));
             final String response = mockMvc.perform(post("/books/author/")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(authorAsJson)
-                            .accept(MediaType.APPLICATION_JSON))
+                            .content(authorAsJson))
                     .andExpect(status().isOk())
                     .andReturn()
                     .getResponse()
