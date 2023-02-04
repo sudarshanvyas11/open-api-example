@@ -5,7 +5,7 @@ services:
     image: sudarshanvyas/open-api-app-1.2
     restart: on-failure
     ports:
-      - 8085:8080
+      - "8085:8085"
     environment:
       WAIT_HOSTS: mysql:3306
     depends_on:
@@ -15,7 +15,7 @@ services:
     image: mysql
     restart: always
     ports:
-      - 6666:3306
+      - "6666:3306"
     environment:
       MYSQL_DATABASE: book
       MYSQL_ROOT_PASSWORD: sudarshan123
