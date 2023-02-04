@@ -13,3 +13,5 @@ springdoc:
 #    web:
 #      exposure:
 #        include: openapi, swagger-ui
+server:
+  port: 8085

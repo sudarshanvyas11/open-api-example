@@ -1,0 +1,27 @@
+version: '3'
+services:
+  open-api-app:
+    container_name: open-api-app
+    image: sudarshanvyas/open-api-app-1.2
+    restart: on-failure
+    ports:
+      - "8085:8085"
+    environment:
+      WAIT_HOSTS: mysql:3306
+    depends_on:
+      - sud-mysql
+  sud-mysql:
+    container_name: sud-mysql
+    image: mysql
+    restart: always
+    ports:
+      - "6666:3306"
+    environment:
+      MYSQL_DATABASE: book
+      MYSQL_ROOT_PASSWORD: sudarshan123
+      MYSQL_ROOT_HOST: '%'
+    healthcheck:
+      test: "/usr/bin/mysql --uroot password=sudarshan123 --execute \"SHOW DATABASES; \""
+      interval: 4s
+      timeout: 20s
+      retries: 5
