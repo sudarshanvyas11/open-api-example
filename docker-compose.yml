@@ -2,7 +2,7 @@ version: '3'
 services:
   open-api-app:
     container_name: open-api-app
-    image: sudarshanvyas/open-api-app-1.1
+    image: sudarshanvyas/open-api-app-1.2
     restart: on-failure
     ports:
       - 8085:8080
