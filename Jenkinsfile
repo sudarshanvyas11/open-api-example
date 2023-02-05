@@ -50,7 +50,7 @@ pipeline {
             agent any
             steps {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
-                    	sh 'docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}'
+                    	sh "docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}"
                         sh 'docker push sudarshanvyas/open-api-app'
                     }
             }
