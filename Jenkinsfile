@@ -41,7 +41,7 @@ pipeline {
             agent any
             steps {
                 sh '''
-                    docker build -f Dockerfile -t open-api-app
+                    docker build -f Dockerfile -t open-api-app .
                     docker tag open-api-app sudarshanvyas/open-api-app
                    '''
             }
@@ -49,8 +49,8 @@ pipeline {
         stage('docker push') {
             agent any
             steps {
-                    withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                    	sh 'docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}'
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
+                    	sh 'docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}'
                         sh 'docker push sudarshanvyas/open-api-app'
                     }
             }
