@@ -24,28 +24,19 @@ pipeline {
                    '''
             }
         }
-        stage('docker build') {
+        stage('docker publish') {
             steps {
-                sh '''
-                    /usr/bin/docker build -f Dockerfile -t open-api-app
-                   '''
+                def dockerImage = docker.build("open-api-app:${env.BUILD_ID}", "-f Dockerfile")
+                dockerImage.push()
+                dockerImage.push('latest')
             }
         }
-        stage('docker push') {
+        stage('docker deploy') {
             steps {
-                sh '''
-                    /usr/bin/docker tag open-api-app sudarshanvyas/open-api-app
-                    /usr/bin/docker push sudarshanvyas/open-api-app
-                   '''
-            }
-        }
-        stage('docker run') {
-            steps {
-                sh '''
-                    /usr/bin/docker pull sudarshanvyas/open-api-app
-                    /usr/bin/docker-compose down
-                    /usr/bin/docker-compose up
-                   '''
+                def dockerImage = docker.image("open-api-app:latest")
+                dockerImage.pull()
+                docker.compose.down()
+                docker.compose.up()
             }
         }
     }
