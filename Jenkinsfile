@@ -33,17 +33,21 @@ pipeline {
             }
         }
         stage('docker push') {
+            steps {
                 sh '''
                     docker tag open-api-app sudarshanvyas/open-api-app
                     docker push sudarshanvyas/open-api-app
                    '''
+            }
         }
         stage('docker run') {
+            steps {
                 sh '''
                     docker pull sudarshanvyas/open-api-app
                     docker-compose down
                     docker-compose up
                    '''
+            }
         }
     }
 }
