@@ -26,21 +26,26 @@ pipeline {
         }
         stage('docker build') {
             steps {
-                   docker build -f Dockerfile -t open-api-app
-
+                sh '''
+                    docker build -f Dockerfile -t open-api-app
+                   '''
             }
         }
         stage('docker push') {
             steps {
+                sh '''
                     docker tag open-api-app sudarshanvyas/open-api-app
                     docker push sudarshanvyas/open-api-app
+                   '''
             }
         }
         stage('docker run') {
             steps {
+                sh '''
                     docker pull sudarshanvyas/open-api-app
                     docker-compose down
                     docker-compose up
+                   '''
             }
         }
     }
