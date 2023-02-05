@@ -12,4 +12,5 @@ MYSQL_DATABASE=book" mysql
 # Docker commands for running the app locally (From parent directory)
 
 docker build -f Dockerfile -t open-api-app .
+
 docker run -d --name=open-api-app -p 8085:8080 --link <<MYSQL_CONTAINER_NAME>>:mysql open-api-app
