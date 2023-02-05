@@ -26,17 +26,20 @@ pipeline {
         }
         stage('docker publish') {
             steps {
-                def dockerImage = docker.build("open-api-app:${env.BUILD_ID}", "-f Dockerfile")
-                dockerImage.push()
-                dockerImage.push('latest')
+                sh '''
+                    docker build -f Dockerfile -t open-api-app
+                    docker tag open-api-app sudarshanvyas/open-api-app
+                    docker push sudarshanvyas/open-api-app
+                   '''
             }
         }
         stage('docker deploy') {
             steps {
-                def dockerImage = docker.image("open-api-app:latest")
-                dockerImage.pull()
-                docker.compose.down()
-                docker.compose.up()
+                sh '''
+                    docker pull sudarshanvyas/open-api-app
+                    docker-compose down
+                    docker-compose up
+                   '''
             }
         }
     }
