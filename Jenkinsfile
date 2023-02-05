@@ -1,12 +1,12 @@
 pipeline {
-    agent{
-        docker {
-            image 'maven:3.8.7-eclipse-temurin-17'
-            args '-v $HOME/.m2:/root/.m2'
-        }
-    }
+    agent none
     stages{
         stage('compile') {
+            agent{
+                docker {
+                    image 'maven:3.8.7-eclipse-temurin-17'
+                }
+            }
             steps {
                 sh '''
                     mvn -B -DskipTests clean compile
@@ -14,24 +14,57 @@ pipeline {
             }
         }
         stage('test') {
-            steps {
-                sh 'mvn test'
+            agent{
+                docker {
+                    image 'maven:3.8.7-eclipse-temurin-17'
+                }
             }
-        }
-        stage('package') {
             steps {
                 sh '''
-                    mvn -B -DskipTests clean package
-                    cp target/open-api-example-1.0-SNAPSHOT.jar /home/sudarshan/projects/open-api/open-api-example.jar
-                    chmod 777 /home/sudarshan/projects/open-api/open-api-example.jar
+                    mvn test
+                   '''
+            }
+        }
+        stage('install') {
+            agent{
+                docker {
+                    image 'maven:3.8.7-eclipse-temurin-17'
+                }
+            }
+            steps {
+                sh '''
+                    mvn -B -DskipTests clean install
                    '''
             }
         }
         stage('docker build') {
+            agent any
             steps {
                 sh '''
-                    docker pull mysql/mysql-server:latest
-                    docker run --detach --name=open-api-mysql --env="MYSQL_TCP_PORT=3306" -d mysql/mysql-server:latest
+                    docker build -f Dockerfile -t open-api-app .
+                    docker tag open-api-app sudarshanvyas/open-api-app
+                   '''
+            }
+        }
+        stage('docker push') {
+            agent any
+            steps {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
+                    	sh "docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}"
+                        sh 'docker push sudarshanvyas/open-api-app'
+                    }
+            }
+        }
+        stage('docker deploy') {
+            agent any
+            steps {
+                sh '''
+                    docker pull sudarshanvyas/open-api-app
+                    docker-compose down
+                    docker-compose up -d
+                    sleep 30
+                    docker ps
+                    echo Et Voila! Deployment successful!
                    '''
             }
         }
