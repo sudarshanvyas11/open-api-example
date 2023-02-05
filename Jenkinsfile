@@ -62,7 +62,6 @@ pipeline {
                     docker pull sudarshanvyas/open-api-app
                     docker-compose down
                     docker-compose up -d
-                    docker ps
                     sleep 30
                     docker ps
                     echo Et Voila! Deployment successful!
