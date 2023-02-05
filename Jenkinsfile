@@ -27,24 +27,24 @@ pipeline {
         stage('docker build') {
             steps {
                 sh '''
-                    docker build -f Dockerfile -t open-api-app
+                    /usr/bin/docker build -f Dockerfile -t open-api-app
                    '''
             }
         }
         stage('docker push') {
             steps {
                 sh '''
-                    docker tag open-api-app sudarshanvyas/open-api-app
-                    docker push sudarshanvyas/open-api-app
+                    /usr/bin/docker tag open-api-app sudarshanvyas/open-api-app
+                    /usr/bin/docker push sudarshanvyas/open-api-app
                    '''
             }
         }
         stage('docker run') {
             steps {
                 sh '''
-                    docker pull sudarshanvyas/open-api-app
-                    docker-compose down
-                    docker-compose up
+                    /usr/bin/docker pull sudarshanvyas/open-api-app
+                    /usr/bin/docker-compose down
+                    /usr/bin/docker-compose up
                    '''
             }
         }
