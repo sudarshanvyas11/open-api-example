@@ -6,7 +6,7 @@ pipeline {
         }
     }
     stages{
-        stage('compile') {
+        stage('build') {
             steps {
                 sh '''
                     mvn -B -DskipTests clean compile
@@ -22,18 +22,28 @@ pipeline {
             steps {
                 sh '''
                     mvn -B -DskipTests clean package
-                    cp target/open-api-example-1.0-SNAPSHOT.jar /home/sudarshan/projects/open-api/open-api-example.jar
-                    chmod 777 /home/sudarshan/projects/open-api/open-api-example.jar
                    '''
             }
         }
         stage('docker build') {
             steps {
                 sh '''
-                    docker pull mysql/mysql-server:latest
-                    docker run --detach --name=open-api-mysql --env="MYSQL_TCP_PORT=3306" -d mysql/mysql-server:latest
+                    docker build -f Dockerfile -t open-api-app
                    '''
             }
+        }
+        stage('docker push') {
+                sh '''
+                    docker tag open-api-app sudarshanvyas/open-api-app
+                    docker push sudarshanvyas/open-api-app
+                   '''
+        }
+        stage('docker run') {
+                sh '''
+                    docker pull sudarshanvyas/open-api-app
+                    docker-compose down
+                    docker-compose up
+                   '''
         }
     }
 }
